@@ -7,6 +7,6 @@ CREATE TABLE public.lancamento
   valor numeric(16,2),
   tipo character varying(20) CHECK (tipo in ('RECEITA', 'DESPENSA') ) NOT NULL,
   status character varying(20) CHECK (status in ('PENDENTE' , 'CANCELADO', 'EFETIVADO')) NOT NULL,
-  id_usuario bigint REFERENCES public.usuario (id),
+  id_usuario bigint REFERENCES usuario (id),
   data_cadastro date default now()
 );

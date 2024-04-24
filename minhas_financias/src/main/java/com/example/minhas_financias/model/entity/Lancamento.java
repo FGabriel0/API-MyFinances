@@ -5,6 +5,9 @@ import java.time.LocalDate;
 
 import org.springframework.data.convert.Jsr310Converters;
 
+import com.example.minhas_financias.model.enuns.StatusLancamento;
+import com.example.minhas_financias.model.enuns.TipoLancamento;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -18,6 +21,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,8 +29,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "lancamento", schema = "public")
 @Builder
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Lancamento {
@@ -53,7 +56,6 @@ public class Lancamento {
 	private BigDecimal valor;
 	
 	@Column(name = "data_cadastro")
-	@Convert(converter = Jsr310Converters.LocalDateToDateConverter.class)
 	private LocalDate datacadastro;
 	
 	@Column(name = "tipo")
