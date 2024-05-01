@@ -1,5 +1,6 @@
 package com.example.minhas_financias.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -53,6 +54,29 @@ public class UsuarioService {
 			throw new RegraNegocioException("Email já cadastrado");
 		}
 		return;
+	}
+	
+	public List<Usuario> listaTodos() {
+		return repository.findAll();
+	}
+	
+	public Usuario alterarUsuario(Long id, UsuarioForm atualizar) {
+		Optional<Usuario> procurar = repository.findById(id); 
+		if(procurar.isPresent()) {
+			Usuario usuario = procurar.get();
+			usuario.setNome(atualizar.getNome());
+			usuario.setEmail(atualizar.getEmail());
+			usuario.setSenha(atualizar.getSenha());
+			return repository.save(usuario);
+		} 
+		else {
+            throw new RegraNegocioException("Usuario não encontrado");
+
+		}
+	}
+	
+	public void deletarUsuario(Long id) {
+		repository.deleteById(id);
 	}
 
 

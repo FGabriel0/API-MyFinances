@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.example.minhas_financias.model.entity.Usuario;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
+public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 	
 	boolean existsByEmail(String email);
 	
