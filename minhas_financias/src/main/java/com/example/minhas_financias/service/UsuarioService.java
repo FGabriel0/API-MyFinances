@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.minhas_financias.controller.form.AutenticarForm;
 import com.example.minhas_financias.controller.form.UsuarioForm;
 import com.example.minhas_financias.exception.ErroAutenticationException;
 import com.example.minhas_financias.exception.RegraNegocioException;
@@ -18,7 +19,7 @@ public class UsuarioService {
 	
 	private final UsuarioRepository repository;
 
-	public Usuario autenticar(UsuarioForm form) {
+	public Usuario autenticar(AutenticarForm form) {
 		
 		Optional<Usuario> usuario = repository.findByEmail(form.getEmail());
 		
@@ -46,13 +47,15 @@ public class UsuarioService {
 		return repository.save(usuario);
 	}
 	
-	public Usuario validarEmail(String email) {
+	public void validarEmail(String email) {
 		boolean existe = repository.existsByEmail(email);
 		if(existe) {
 			throw new RegraNegocioException("Email já cadastrado");
 		}
-		return null;
+		return;
 	}
+
+
 	
 	
 }

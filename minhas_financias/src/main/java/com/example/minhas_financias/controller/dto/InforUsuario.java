@@ -1,4 +1,4 @@
-package com.example.minhas_financias.controller.form;
+package com.example.minhas_financias.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UsuarioForm {
-	
+public class InforUsuario {
+
+	private Long id;
 	private String nome;
 	private String email;
-	private String senha;
 }

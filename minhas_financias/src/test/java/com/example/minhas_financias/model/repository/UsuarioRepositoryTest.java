@@ -79,6 +79,7 @@ public class UsuarioRepositoryTest {
 		
 		
 	}
+	
 	@Test
 	public void deveRetornaVazioAoBuscarUsuarioPorEmailQuandoNaoExiste() {
 					
@@ -87,12 +88,6 @@ public class UsuarioRepositoryTest {
 		
 		Assertions.assertFalse(result.isPresent());
 	}
-	
-	
-	
-	
-	
-	
 	
 	public static Usuario criarUsuario() {
 		return Usuario.builder()
