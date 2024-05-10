@@ -2,6 +2,7 @@ package com.example.minhas_financias.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.minhas_financias.controller.dto.InforLancamento;
 import com.example.minhas_financias.controller.form.LancamentoForm;
+import com.example.minhas_financias.controller.form.buscarPorFiltro;
 import com.example.minhas_financias.exception.RegraNegocioException;
 import com.example.minhas_financias.model.entity.Lancamento;
 import com.example.minhas_financias.model.entity.Usuario;
@@ -77,8 +79,8 @@ public class LancamentoService {
 		repository.deleteById(id);
 	}
 	
-	@Transactional
-	public List<Lancamento> buscar(LancamentoForm form){
+    @Transactional(readOnly = true)
+	public List<InforLancamento> buscar(buscarPorFiltro form){
 		
 		Lancamento lancamento = Lancamento.builder()
 				.descricao(form.getDescricao())
@@ -91,7 +93,8 @@ public class LancamentoService {
 				.withIgnoreCase()//Não importa como a String vai vim se caixa alto ou não mas ainda vai buscar
 				.withStringMatcher(StringMatcher.CONTAINING));//Forma de como ele vai vai buscar 
 		
-		return repository.findAll(example);
+	    List<Lancamento> lancamentos = repository.findAll(example);
+		 return converter(lancamentos);
 	}
 	
 	public List<Lancamento> buscarPorUsuario(Long idUsuario){
@@ -144,4 +147,25 @@ public class LancamentoService {
                 .status(lancamento.getStatus())
                 .build();
     }
+	
+	
+	private List<InforLancamento> converter(List<Lancamento> lancamentos) {
+	    List<InforLancamento> infoLancamentos = new ArrayList<>();
+
+	    for (Lancamento lancamento : lancamentos) {
+	        String nomeUsuario = lancamento.getUsuario().getNome(); 
+	        InforLancamento infoLancamento = InforLancamento.builder()
+	        		.id(lancamento.getId())
+	        		.id_usuario(nomeUsuario)
+	                .descricao(lancamento.getDescricao())
+	                .ano(lancamento.getAno())
+	                .mes(lancamento.getMes())
+	                .valor(lancamento.getValor())
+	                .tipoLancamento(lancamento.getTipo())
+	                .status(lancamento.getStatus())
+	                .build();
+	        infoLancamentos.add(infoLancamento);
+	    }
+	    return infoLancamentos;
+	}
 }

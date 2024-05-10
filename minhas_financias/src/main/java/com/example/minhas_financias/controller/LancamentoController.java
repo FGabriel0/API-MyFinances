@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -12,10 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.minhas_financias.controller.dto.InforLancamento;
 import com.example.minhas_financias.controller.form.LancamentoForm;
+import com.example.minhas_financias.controller.form.buscarPorFiltro;
 import com.example.minhas_financias.controller.form.updateStatusForm;
 import com.example.minhas_financias.model.entity.Lancamento;
 import com.example.minhas_financias.model.entity.Usuario;
@@ -33,9 +36,19 @@ public class LancamentoController {
 	
 	private final LancamentoService service;
 	
-	@GetMapping
-	public ResponseEntity<Response<List<Lancamento>>> buscar(@RequestBody LancamentoForm form){
-		Response<List<Lancamento>> response = new Response<>();
+	@GetMapping("/buscar")
+    @Transactional(readOnly = true)
+	public ResponseEntity<Response<List<InforLancamento>>> buscarFiltrada(
+			@RequestParam(value = "descricao", required = false) String descricao,
+			@RequestParam(value = "mes", required = false) Integer mes,
+			@RequestParam(value = "ano", required = false)Integer ano)
+	{
+		buscarPorFiltro form = new buscarPorFiltro();
+		form.setDescricao(descricao);
+		form.setAno(ano);
+		form.setMes(mes);
+		
+		Response<List<InforLancamento>> response = new Response<>();
 		try {
 			
 			response.setStatus(ResponseStatusEnum.SUCCESS);
