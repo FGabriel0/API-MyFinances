@@ -22,4 +22,6 @@ public class LancamentoForm {
 	public BigDecimal valor;
 	public TipoLancamento tipoLancamento;
 	public StatusLancamento status;
+	
+
 }

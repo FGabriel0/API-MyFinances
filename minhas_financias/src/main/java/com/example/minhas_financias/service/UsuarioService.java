@@ -78,6 +78,10 @@ public class UsuarioService {
 	public void deletarUsuario(Long id) {
 		repository.deleteById(id);
 	}
+	
+	public Optional<Usuario > obterPorId(Long id) {
+		return repository.findById(id);
+	}
 
 
 	

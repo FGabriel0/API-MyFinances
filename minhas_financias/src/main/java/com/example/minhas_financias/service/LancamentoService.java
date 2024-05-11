@@ -21,6 +21,7 @@ import com.example.minhas_financias.exception.RegraNegocioException;
 import com.example.minhas_financias.model.entity.Lancamento;
 import com.example.minhas_financias.model.entity.Usuario;
 import com.example.minhas_financias.model.enuns.StatusLancamento;
+import com.example.minhas_financias.model.enuns.TipoLancamento;
 import com.example.minhas_financias.model.repository.LancamentoRepository;
 import com.example.minhas_financias.model.repository.UsuarioRepository;
 
@@ -113,6 +114,20 @@ public class LancamentoService {
 		}).orElseThrow(() -> new RegraNegocioException("Lançamento inválido"));
 	}
 	
+	@Transactional(readOnly = true)
+	public BigDecimal obterSaldoUsuario(Long id) {
+		BigDecimal receitas = repository.obterSaldoLancamentoUsuario(id, TipoLancamento.RECEITA);
+		BigDecimal despensas = repository.obterSaldoLancamentoUsuario(id, TipoLancamento.DESPENSA);
+		
+		if(receitas == null) {
+			receitas = BigDecimal.ZERO;
+		}
+		if(despensas == null) {
+			despensas = BigDecimal.ZERO;
+		}
+		return receitas.subtract(despensas);
+	}
+	
 	private void validarLancamento(LancamentoForm form) {
 		if(form.getDescricao() == null || form.descricao.trim().equals("")) {
 			throw new RegraNegocioException("Digite uma Descrição válida");
@@ -168,4 +183,7 @@ public class LancamentoService {
 	    }
 	    return infoLancamentos;
 	}
+	
+	
+    
 }

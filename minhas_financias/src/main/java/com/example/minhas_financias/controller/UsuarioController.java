@@ -1,10 +1,13 @@
 package com.example.minhas_financias.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.minhas_financias.controller.dto.inforSaldoDTO;
 import com.example.minhas_financias.controller.form.AutenticarForm;
 import com.example.minhas_financias.controller.form.UsuarioForm;
+import com.example.minhas_financias.model.entity.Lancamento;
 import com.example.minhas_financias.model.entity.Usuario;
 import com.example.minhas_financias.model.enuns.ResponseStatusEnum;
 import com.example.minhas_financias.response.Response;
+import com.example.minhas_financias.service.LancamentoService;
 import com.example.minhas_financias.service.UsuarioService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioController {
 
 	private final UsuarioService service;
+	private final LancamentoService lancamentoService;
 	
 	@PostMapping("/salvar")
 	public ResponseEntity<Response<Usuario>> salvar(@RequestBody UsuarioForm usuario ) {
@@ -91,6 +98,32 @@ public class UsuarioController {
 		}
         
 	
+	}
+	
+	@GetMapping("/{id}/saldo")
+	public ResponseEntity<Response<inforSaldoDTO>> obterSaldo(@PathVariable("id") Long id){
+		Response<inforSaldoDTO> response = new Response<>();
+		try {
+			Optional<Usuario> existe = service.obterPorId(id);
+			
+			if(!existe.isPresent()) {
+				 response.setStatus(ResponseStatusEnum.ERROR);
+				 return ResponseEntity.ok(response);
+			}
+			
+			BigDecimal saldo = lancamentoService.obterSaldoUsuario(id);
+			inforSaldoDTO dto = new inforSaldoDTO();
+			dto.setSaldo(saldo);
+			
+			response.setStatus(ResponseStatusEnum.SUCCESS);
+			response.setData(dto);
+			return ResponseEntity.ok(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setStatus(ResponseStatusEnum.ERROR);
+			response.setMessage("Ocorreu um erro inesperado. Entre em contato com o administrador do sistema.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
 	}
 
 }
