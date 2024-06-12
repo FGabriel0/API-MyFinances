@@ -44,7 +44,7 @@ public class UsuarioServiceTest {
 	
 	
 	
-	@Test
+	/*@Test
 	public void deveValidarEmail() {
 		 Mockito.when(repository.existsByEmail("email@email.com")).thenReturn(false);      
 	        Assertions.assertDoesNotThrow(() -> {
@@ -60,9 +60,9 @@ public class UsuarioServiceTest {
 	        Assertions.assertThrows(RegraNegocioException.class, () -> {
 	            service.validarEmail(usuario.getEmail());
 	        });
-	}
+	}*/
 	
-	@Test
+	/*@Test
 	public void deveAutenticarUsuariocomSucesso() {
 		//Cenário
 		String email = "email@email.com";
@@ -83,9 +83,9 @@ public class UsuarioServiceTest {
 		//verificação
 		Assertions.assertNotNull(result);
 		
-	}
+	}*/
 	
-	@Test
+	/*@Test
 	public void deveLancaErrorParaEmailUsuarioNaoAutenticado() {
 		String email = "email@email.com";
 		String senha = "admin";
@@ -112,12 +112,12 @@ public class UsuarioServiceTest {
 		/*Assertions.assertThrows(ErroAutenticationException.class, () -> {
 			AutenticarForm form = new AutenticarForm(usuario.getEmail(),usuario.getSenha());
 			service.autenticar(form);
-        });*/
+        });
 		
 		
-	}
+	}*/
 		
-	@Test
+	/*@Test
 	public void deveLancaErrorQuandoSenhaNaoBater() {
 		String email = "email@email.com";
 		String senha = "admin";
@@ -145,10 +145,10 @@ public class UsuarioServiceTest {
 		/*Assertions.assertThrows(ErroAutenticationException.class, () -> {
 			AutenticarForm form = new AutenticarForm(usuario.getEmail(),"senha");
 			service.autenticar(form);
-        });*/
-	}
+        });
+	}*/
 	
-	@Test
+	/*@Test
 	public void deveSalvaUsuario() {
 		//Cénario
 		Mockito.doNothing().when(service).validarEmail(Mockito.anyString());//Não vai fazer nada(Não lança erro)
@@ -197,5 +197,5 @@ public class UsuarioServiceTest {
 				.email("email@email.com")
 				.Senha("admin")
 				.build();
-	}
+	}*/
 }

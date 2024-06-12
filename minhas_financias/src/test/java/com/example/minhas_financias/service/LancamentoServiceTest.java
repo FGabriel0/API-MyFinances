@@ -49,29 +49,30 @@ public class LancamentoServiceTest {
 	TestEntityManager entityManager;
 	
 	@Test
-	public void deveSalvaLancamento() {
-		
-		LancamentoForm form = criarLancamentoForm();
+    public void deveSalvaLancamento() {
+		  LancamentoForm form = criarLancamentoForm();
+		  Mockito.when(repository.save(Mockito.any(Lancamento.class))).thenReturn(null);
 
-		Mockito.when(usuarioRepository.findById(anyLong())).thenReturn(Optional.of(new Usuario()));
-	    Mockito.when(repository.save(any(Lancamento.class))).thenReturn(new Lancamento());
+		    // Act
+		    InforLancamento salvar = service.salvar(form);
 
-	    InforLancamento salvar = service.salvar(form);
+		    // Assert
+		    Assertions.assertNotNull(salvar);
+    }
 
-	    Assertions.assertNotNull(salvar);
-		
-	}
 	
-	
-	private static LancamentoForm criarLancamentoForm() {
-	    return new LancamentoForm(
-	        "Casa", 
-	        2019, 
-	        1, 
-	        26L, 
-	        BigDecimal.valueOf(10), 
-	        TipoLancamento.RECEITA,
-	        StatusLancamento.PENDENTE 
-	    );
+
+	public static LancamentoForm criarLancamentoForm() {
+	    return LancamentoForm.builder()
+	    		.descricao("casa")
+	    		.ano(2024)
+	    		.mes(11)
+	    		.usuario_id(1)
+	    		.valor(BigDecimal.TEN)
+	    		.tipoLancamento(TipoLancamento.DESPENSA)
+	    		.status(StatusLancamento.PENDENTE)
+	    		.build();
+	      
 	}
+
 }

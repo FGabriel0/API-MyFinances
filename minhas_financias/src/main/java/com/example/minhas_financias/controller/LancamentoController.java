@@ -63,7 +63,7 @@ public class LancamentoController {
 	}
 	
 	@GetMapping("/{idUsuario}")
-	public ResponseEntity<Response<List<Lancamento>>> buscarPorUsuario(@PathVariable Long idUsuario){
+	public ResponseEntity<Response<List<Lancamento>>> buscarPorUsuario(@PathVariable Integer idUsuario){
 		Response<List<Lancamento>> response = new Response<>();
 		try {
 			response.setStatus(ResponseStatusEnum.SUCCESS);
@@ -94,7 +94,7 @@ public class LancamentoController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Response<InforLancamento>> atualizar(@PathVariable Long id,
+	public ResponseEntity<Response<InforLancamento>> atualizar(@PathVariable Integer id,
 			@RequestBody LancamentoForm form){
 		
 		Response<InforLancamento> response = new Response<>();
@@ -111,7 +111,7 @@ public class LancamentoController {
 	}
 	
 	@PatchMapping("/{id}")
-	public ResponseEntity<Response<Lancamento>> atualizarStatus(@PathVariable Long id,
+	public ResponseEntity<Response<Lancamento>> atualizarStatus(@PathVariable Integer id,
 			@RequestBody updateStatusForm form){
 		Response<Lancamento> response= new Response<>();
 		String novoStatus = form.getNovostatus();
@@ -129,7 +129,7 @@ public class LancamentoController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Response<Lancamento>> deletarLancamento(@PathVariable Long id){
+	public ResponseEntity<Response<Lancamento>> deletarLancamento(@PathVariable Integer id){
 		Response<Lancamento> response = new Response<>();
 		try {
 			response.setStatus(ResponseStatusEnum.SUCCESS);

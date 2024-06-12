@@ -3,6 +3,7 @@ package com.example.minhas_financias.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.minhas_financias.controller.form.AutenticarForm;
@@ -19,30 +20,19 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioService {
 	
 	private final UsuarioRepository repository;
+	private final PasswordEncoder encoder;
 
-	public Usuario autenticar(AutenticarForm form) {
-		
-		Optional<Usuario> usuario = repository.findByEmail(form.getEmail());
-		
-		if(!usuario.isPresent()) {
-			throw new ErroAutenticationException("Usuario não Encontrado");
-		}
-		
-		if(!usuario.get().getSenha().equals(form.getSenha())) {
-			throw new ErroAutenticationException("Senha inválida");
-		}
-		
-		return usuario.get();
-		
-	}
 	
 	public Usuario salvarUsuario(UsuarioForm form) {
 		validarEmail(form.getEmail());
+        String senhaCriptografada = encoder.encode(form.getSenha());
+
 		
 		Usuario usuario = Usuario.builder()
-				.nome(form.getNome())
+				.login(form.getNome())
 				.email(form.getEmail())
-				.Senha(form.getSenha())
+				.senha(senhaCriptografada)
+				.role(form.getRole())
 				.build();
 		
 		return repository.save(usuario);
@@ -60,11 +50,11 @@ public class UsuarioService {
 		return repository.findAll();
 	}
 	
-	public Usuario alterarUsuario(Long id, UsuarioForm atualizar) {
+	public Usuario alterarUsuario(Integer id, UsuarioForm atualizar) {
 		Optional<Usuario> procurar = repository.findById(id); 
 		if(procurar.isPresent()) {
 			Usuario usuario = procurar.get();
-			usuario.setNome(atualizar.getNome());
+			usuario.setLogin(atualizar.getNome());
 			usuario.setEmail(atualizar.getEmail());
 			usuario.setSenha(atualizar.getSenha());
 			return repository.save(usuario);
@@ -75,11 +65,11 @@ public class UsuarioService {
 		}
 	}
 	
-	public void deletarUsuario(Long id) {
+	public void deletarUsuario(Integer id) {
 		repository.deleteById(id);
 	}
 	
-	public Optional<Usuario > obterPorId(Long id) {
+	public Optional<Usuario > obterPorId(Integer id) {
 		return repository.findById(id);
 	}
 

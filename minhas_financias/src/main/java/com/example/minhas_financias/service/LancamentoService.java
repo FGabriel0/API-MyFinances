@@ -53,7 +53,7 @@ public class LancamentoService {
 	        return converter(lancamentoSalvo);
 	    }
 	
-	public InforLancamento atualizar(Long id,LancamentoForm form) {
+	public InforLancamento atualizar(Integer id,LancamentoForm form) {
 		Objects.requireNonNull(id);
 		validarLancamento(form);
 		Optional<Lancamento> procurar = repository.findById(id);
@@ -75,7 +75,7 @@ public class LancamentoService {
 	
 	}
 	
-	public void deletarLancamento(Long id) {
+	public void deletarLancamento(Integer id) {
 		Objects.requireNonNull(id);
 		repository.deleteById(id);
 	}
@@ -98,14 +98,14 @@ public class LancamentoService {
 		 return converter(lancamentos);
 	}
 	
-	public List<Lancamento> buscarPorUsuario(Long idUsuario){
+	public List<Lancamento> buscarPorUsuario(Integer idUsuario){
 		Usuario usuario = usuarioRepository.findById(idUsuario)
 				.orElseThrow(() -> new RegraNegocioException("Usuário não encontrado"));
 		return repository.findByUsuario(usuario);
 	}
 	
 	
-	public void atualizarStatus(Long id,
+	public void atualizarStatus(Integer id,
 			StatusLancamento statusLancamento ) {
 		
 		repository.findById(id).map(p -> {
@@ -115,7 +115,7 @@ public class LancamentoService {
 	}
 	
 	@Transactional(readOnly = true)
-	public BigDecimal obterSaldoUsuario(Long id) {
+	public BigDecimal obterSaldoUsuario(Integer id) {
 		BigDecimal receitas = repository.obterSaldoLancamentoUsuario(id, TipoLancamento.RECEITA);
 		BigDecimal despensas = repository.obterSaldoLancamentoUsuario(id, TipoLancamento.DESPENSA);
 		
@@ -150,7 +150,7 @@ public class LancamentoService {
 	}
 	
 	private InforLancamento converter(Lancamento lancamento) {
-        String nomeUsuario = lancamento.getUsuario().getNome(); 
+        String nomeUsuario = lancamento.getUsuario().getLogin(); 
         return InforLancamento.builder()
                 .id(lancamento.getId())
                 .descricao(lancamento.getDescricao())
@@ -168,7 +168,7 @@ public class LancamentoService {
 	    List<InforLancamento> infoLancamentos = new ArrayList<>();
 
 	    for (Lancamento lancamento : lancamentos) {
-	        String nomeUsuario = lancamento.getUsuario().getNome(); 
+	        String nomeUsuario = lancamento.getUsuario().getLogin(); 
 	        InforLancamento infoLancamento = InforLancamento.builder()
 	        		.id(lancamento.getId())
 	        		.id_usuario(nomeUsuario)

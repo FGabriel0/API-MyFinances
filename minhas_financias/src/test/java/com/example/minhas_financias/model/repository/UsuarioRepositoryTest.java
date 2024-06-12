@@ -11,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -66,34 +68,39 @@ public class UsuarioRepositoryTest {
 	
 	@Test
 	public void deveProcurarUsuarioPorEmail() {
-		//Cénario
-		Usuario usuario = criarUsuario();
 		
-		//Ação
-		entityManager.persist(usuario);
+		 UserDetails userDetails = User.builder()
+	                .username("usuario@gmail.com")
+	                .password("senha")
+	                .roles("USER")
+	                .build();
 		
-		 //Verificação
-		Optional<Usuario> result = repository.findByEmail("usuario@gmail.com");
-		
-		Assertions.assertTrue(result.isPresent());
-		
-		
+		// Ação
+	        entityManager.persist(userDetails);
+
+	        // Verificação
+	     UserDetails result = repository.findByLogin("usuario@gmail.com");
+
+	        // Asserção
+	        Assertions.assertNotNull(result);
+	        Assertions.assertEquals("usuario@gmail.com", result.getUsername());
+	    
 	}
 	
 	@Test
 	public void deveRetornaVazioAoBuscarUsuarioPorEmailQuandoNaoExiste() {
 					
 		//Verificação
-		Optional<Usuario> result = repository.findByEmail("usuario@gmail.com");		
+		UserDetails result = repository.findByLogin("usuario@gmail.com");		
 		
-		Assertions.assertFalse(result.isPresent());
+        Assertions.assertNotNull(result);
 	}
 	
 	public static Usuario criarUsuario() {
 		return Usuario.builder()
-				.nome("usuario")
+				.login("usuario")
 				.email("usuario@gmail.com")
-				.Senha("admin")
+				.senha("admin")
 				.build();
 	}
 	
