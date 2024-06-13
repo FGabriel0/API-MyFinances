@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
+import NavBar from '../components/NavBar'
 
 const Home = () => {
 const [saldo,setSaldo] = useState(0)
 
   return (
     <div className="jumbotron">
+    <NavBar/>
     <h1 className="display-3">Bem vindo!</h1>
     <p className="lead">Esse é seu sistema de finanças.</p>
     <p className="lead">Seu saldo para o mês atual é de R$ {saldo} </p>

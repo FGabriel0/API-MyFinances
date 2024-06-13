@@ -31,7 +31,6 @@ import com.example.minhas_financias.service.UsuarioService;
 
 import lombok.RequiredArgsConstructor;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/finance")
 @RequiredArgsConstructor

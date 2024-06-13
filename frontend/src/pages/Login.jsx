@@ -1,34 +1,33 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState} from "react";
 import Card from "../components/Card";
 import FormGroup from "../components/FormGroup";
+import { loginAPICall,saveLoggedInUser,storeToken } from "../services/AuthService";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
 import { mensagemErro, mensagemSucesso } from "../components/toastr";
-import useFetch from "../hooks/useFetch";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [nome, setNome] = useState("");
   const [senha, setSenha] = useState("");
-  const [message, setMessage] = useState('');
-
   const navigate = useNavigate();
-  const {loading,error,post} = useFetch();
 
-  
-  const handleLogin = async (e) => {
+  async function handleLoginForm(e){
+
     e.preventDefault();
-    try {
-      post('http://localhost:5353/api/finance', {
-          email:email,
-          senha:senha
-      });
-      navigate("/home")
-  } catch (error) {
-      console.error('Erro ao cadastrar usuário', error);
-      mensagemErro('Erro ao cadastrar usuário.');
-  }
-};
+    await loginAPICall(nome, senha).then((response) => {
+        console.log(response.data);
+
+        const token = 'Basic ' + window.btoa(nome + ":" + senha);
+        storeToken(token);
+        mensagemSucesso("Logado com Sucesso");
+        saveLoggedInUser(nome);
+        navigate("/home")
+
+        window.location.reload(false);
+    }).catch(error => {
+        console.error(error);
+    })
+
+}
 
 
   const prepareCadastrar = () => {
@@ -36,7 +35,7 @@ const Login = () => {
   };
 
   return (
-    <div className="row align-items-center" style={{ height: '90vh' }}>
+    <div className="row" style={{ height: '90vh' }}>
       <div className="col-md-6 offset-md-3">
         <div className="bs-docs-section">
           <Card title="Login">
@@ -44,15 +43,15 @@ const Login = () => {
               <div className="col-lg-12">
                 <div className="bs-component">
                   <fieldset>
-                    <FormGroup label="Email: *" htmlFor="exampleInputEmail1">
+                    <FormGroup label="Nome: *" htmlFor="Usuario">
                       <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        type="text"
+                        value={nome}
+                        onChange={(e) => setNome(e.target.value)}
                         className="form-control"
                         id="exampleInputEmail1"
                         aria-describedby="emailHelp"
-                        placeholder="Digite o Email"
+                        placeholder="Digite seu Usuario"
                       />
                     </FormGroup>
                     <FormGroup label="Senha: *" htmlFor="exampleInputPassword1">
@@ -65,7 +64,7 @@ const Login = () => {
                         placeholder="Password"
                       />
                     </FormGroup>
-                    <button onClick={handleLogin} className="btn btn-success">
+                    <button onClick={handleLoginForm} className="btn btn-success">
                       <i className="pi pi-sign-in"></i> Entrar
                     </button>
                     <button
