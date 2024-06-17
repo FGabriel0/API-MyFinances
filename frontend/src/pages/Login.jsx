@@ -16,7 +16,7 @@ const Login = () => {
     await loginAPICall(nome, senha).then((response) => {
         console.log(response.data);
 
-        const token = 'Basic ' + window.btoa(nome + ":" + senha);
+        const token = response.data.token;
         storeToken(token);
         mensagemSucesso("Logado com Sucesso");
         saveLoggedInUser(nome);
@@ -28,8 +28,6 @@ const Login = () => {
     })
 
 }
-
-
   const prepareCadastrar = () => {
     navigate("/cadastra");
   };

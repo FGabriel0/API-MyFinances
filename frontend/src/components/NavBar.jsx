@@ -17,7 +17,7 @@ const NavBar = () => {
             <ul className="navbar-nav">
                 <NavbarItem  href="/home" label="Home" />
                 <NavbarItem  href="/cadastro-usuarios" label="Usuários" />
-                <NavbarItem  href="/consulta-lancamentos" label="Lançamentos" />
+                <NavbarItem  href="/consultar-lancamentos" label="Lançamentos" />
                 <NavbarItem  onClick={logout} href="/" label="Sair" />
             </ul>
             </div>

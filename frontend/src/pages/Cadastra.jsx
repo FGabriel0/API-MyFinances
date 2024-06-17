@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Card from '../components/Card'
 import FormGroup from '../components/FormGroup'
-import axios from 'axios'
 import { mensagemErro, mensagemSucesso } from '../components/toastr'
 
 const Cadastra = () => {
@@ -16,23 +15,7 @@ const Cadastra = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const response = await axios.post('http://localhost:5353/api/finance/salvar', {
-                nome:nome,
-                email:email,
-                senha:senha
-            });
-
-            if (response.data.status === 'success') {
-                mensagemSucesso('Usuário cadastrado com sucesso!');
-            } else {
-                mensagemErro('Falha ao cadastrar usuário.');
-            }
-        } catch (error) {
-            console.error('Erro ao cadastrar usuário', error);
-            setMessage('Erro ao cadastrar usuário.');
-        }
-    };
+    }
 
   return (
     <Card title="Cadastro de Usuário">

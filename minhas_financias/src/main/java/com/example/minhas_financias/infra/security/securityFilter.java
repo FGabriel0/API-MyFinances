@@ -37,6 +37,9 @@ public class securityFilter extends OncePerRequestFilter {
 					
             var authentication = new UsernamePasswordAuthenticationToken(user,
             			null, user.getAuthorities());
+            Long userId = service.extractUserId(token);  // Extrai o ID do usuário do token
+            authentication.setDetails(userId);
+
             
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			

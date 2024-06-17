@@ -67,7 +67,7 @@ public class LancamentoServiceTest {
 	    		.descricao("casa")
 	    		.ano(2024)
 	    		.mes(11)
-	    		.usuario_id(1)
+	    		.usuario_id("dwqwdqw")
 	    		.valor(BigDecimal.TEN)
 	    		.tipoLancamento(TipoLancamento.DESPENSA)
 	    		.status(StatusLancamento.PENDENTE)

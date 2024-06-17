@@ -24,6 +24,7 @@ public class tokenService {
 	            String token = JWT.create()
 	                    .withIssuer("auth-api")
 	                    .withSubject(user.getLogin())
+	                    .withClaim("userId", user.getId())
 	                    .withExpiresAt(genExpirationDate())
 	                    .sign(algorithm);
 	            return token;
@@ -42,6 +43,19 @@ public class tokenService {
 	                    .getSubject();
 	        } catch (JWTVerificationException exception){
 	            return "";
+	        }
+	    }
+	    
+	    public Long extractUserId(String token){
+	        try {
+	            Algorithm algorithm = Algorithm.HMAC256(secret);
+	            return JWT.require(algorithm)
+	                    .withIssuer("auth-api")
+	                    .build()
+	                    .verify(token)
+	                    .getClaim("userId").asLong();
+	        } catch (JWTVerificationException exception){
+	            throw new RuntimeException("Invalid token", exception);
 	        }
 	    }
 

@@ -7,3 +7,7 @@ export const createUsuario = (nome,senha,email,role) => axios.post(BASE_URL_USUA
 export const deleteUsuario = (idUsuario) => axios.delete(BASE_URL_USUARIO,idUsuario)
 
 export const updateUsuario = (idUsuario,usuario) => axios.put(BASE_URL_USUARIO,{idUsuario,usuario})
+
+export const obterSaldo = (idUsuario) => axios.get(BASE_URL_USUARIO + `/${idUsuario}/saldo`)
+
+
