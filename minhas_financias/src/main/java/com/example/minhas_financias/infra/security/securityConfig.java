@@ -31,7 +31,7 @@ public class securityConfig {
 							.requestMatchers(HttpMethod.POST, "/api/finance/login").permitAll()
 							.requestMatchers(HttpMethod.POST,"/api/lancamento/salvar").hasRole("ADMIN")
 							.requestMatchers(HttpMethod.GET,"/api/finance/{id}/saldo").permitAll()
-							.requestMatchers(HttpMethod.PATCH,"/api/finance/{id}").hasRole("ADMIN")
+							.requestMatchers(HttpMethod.PATCH,"/api/lancamento/{id}").hasRole("ADMIN")
 							.anyRequest().authenticated()
 							)
 					.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)

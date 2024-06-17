@@ -26,9 +26,10 @@ export const deleteLancamento = (id, token) => axios.delete(BASE_URL_LANCAMENTO 
     }
 })
 
-export const updateStatus = (id,novoStatus) => axios.patch(BASE_URL_LANCAMENTO + `/${id}`,novoStatus,{
+export const updateStatus = (id,novoStatus,token) => axios.patch(BASE_URL_LANCAMENTO + `/${id}`,novoStatus,{
     headers: {
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json' // Configura o tipo de conteúdo para JSON
     }
 })
 

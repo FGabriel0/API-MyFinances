@@ -16,7 +16,7 @@ public class MinhasFinanciasApplication implements WebMvcConfigurer{
 	    public void addCorsMappings(CorsRegistry registry) {
 	        registry.addMapping("/**")
 	            .allowedOrigins("http://localhost:5173") // Permita requisições apenas do frontend
-	            .allowedMethods("GET", "POST", "PUT", "DELETE") // Métodos HTTP permitidos
+	            .allowedMethods("GET", "POST", "PUT", "DELETE","PATCH") // Métodos HTTP permitidos
 	            .allowedHeaders("*") // Headers permitidos
 	            .allowCredentials(true); // Permitir envio de cookies e credenciais
 	    }

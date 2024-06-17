@@ -7,6 +7,7 @@ import { HiCheck } from "react-icons/hi";
 const LancamentoTable = ({
   lancamentos,
   alterarStatus,
+  cancelarStatus,
   editAction,
   deleteAction,
 }) => {
@@ -49,7 +50,7 @@ const LancamentoTable = ({
                   className="btn btn-warning"
                   title="Cancelar"
                   disabled={lancamento.status !== "PENDENTE"}
-                  onClick={() => alterarStatus(lancamento, "CANCELADO")}
+                  onClick={() => cancelarStatus(lancamento, "CANCELADO")}
                   type="button"
                 >
                   <MdCancelPresentation  />

@@ -10,7 +10,6 @@ import LancamentoTable from "./TableLancamento";
 import NavBar from "../../components/NavBar";
 import { mensagemErro, mensagemSucesso } from "../../components/toastr";
 
-
 const ConsultarLancamento = () => {
   const [lancamentos, setLancamentos] = useState([]);
   const token = localStorage.getItem("token");
@@ -32,14 +31,25 @@ const ConsultarLancamento = () => {
     };
 
     fetchLancamentos();
-  }, [usuario_id,token]);
+  }, [usuario_id, token]);
 
   const alterarStatus = async (lancamento) => {
     try {
-        await updateStatus(lancamento.id,token)
-        setLancamentos(status => status.filter(lancamentos => lancamentos.status == "PENDENTE"))
+      await updateStatus(lancamento.id, "EFETIVADO", token);
+      mensagemSucesso("Efetivado com sucesso");
+      window.location.reload(false); 
     } catch (error) {
-        mensagemErro("Erro ao Efetivar",error)
+      mensagemErro("Erro ao Efetivar", error);
+    }
+  };
+
+  const cancelarStatus = async(lancamento) =>{
+    try {
+      await updateStatus(lancamento.id, "CANCELADO", token);
+      mensagemSucesso("Cancelado com sucesso");
+      window.location.reload(false); 
+    } catch (error) {
+      mensagemErro("Erro ao Efetivar", error);
     }
   };
 
@@ -47,23 +57,26 @@ const ConsultarLancamento = () => {
     // Lógica para editar o lançamento
   };
 
-  const deleteAction =  async (lancamento) => {
+  const deleteAction = async (lancamento) => {
     if (!token) {
-        mensagemErro("Usuário não autenticado!");
-        return;
-      }
-      try {
-        await deleteLancamento(lancamento.id, token);
-        setLancamentos(prevLancamentos => prevLancamentos.filter(lancamentos => lancamentos.id !== id));
-        mensagemSucesso("Deletado com sucesso")
-      } catch (error) {
-        console.error("Erro ao deletar lançamento:", error);
-      }
+      mensagemErro("Usuário não autenticado!");
+      return;
+    }
+    try {
+      await deleteLancamento(lancamento.id, token);
+      setLancamentos((prevLancamentos) =>
+        prevLancamentos.filter((lancamentos) => lancamentos.id !== id)
+      );
+      mensagemSucesso("Deletado com sucesso");
+      window.location.reload(false); 
+    } catch (error) {
+      console.error("Erro ao deletar lançamento:", error);
+    }
   };
 
   return (
     <div className="row">
-        <NavBar/>
+      <NavBar />
       <div className="col-md-8 offset-md-2">
         <div className="bs-docs-section">
           <Card title="Consulta Lançamentos">
@@ -71,6 +84,7 @@ const ConsultarLancamento = () => {
               lancamentos={lancamentos}
               alterarStatus={alterarStatus}
               editAction={editAction}
+              cancelarStatus={cancelarStatus}
               deleteAction={deleteAction}
             />
           </Card>
